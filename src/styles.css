@@ -129,6 +129,11 @@ label input, label select { margin-top: 0.3rem; font-weight: 400; color: var(--t
 .timetable-scroll { flex: 1; overflow: auto; padding: 0 1.25rem 1.25rem; }
 .timetable {
   display: grid;
+  /* Row 1 is the room header and needs to fit two stacked lines; without an
+     explicit track it inherits grid-auto-rows and gets clipped to a slot's
+     height. Slot rows (2..n) keep the fixed height that makes 30 minutes of
+     the timetable a constant size. */
+  grid-template-rows: auto;
   grid-auto-rows: 1.75rem;
   gap: 2px;
   min-width: 48rem;
