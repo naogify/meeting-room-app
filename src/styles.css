@@ -1,0 +1,227 @@
+:root {
+  --gutter: 4.5rem;
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --border: #dfe3e8;
+  --text: #1b1f24;
+  --muted: #6b7280;
+  --accent: #1a6dd4;
+  --mine: #1a6dd4;
+  --mine-bg: #e7f0fc;
+  --others: #8a93a0;
+  --others-bg: #eef0f3;
+  --free: #ffffff;
+  --free-hover: #e7f0fc;
+  --danger: #b4231f;
+  --danger-bg: #fdeceb;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14171c;
+    --surface: #1c2027;
+    --border: #2e343d;
+    --text: #e7e9ec;
+    --muted: #98a1ad;
+    --accent: #5aa2f5;
+    --mine: #5aa2f5;
+    --mine-bg: #1c2f47;
+    --others: #7d8794;
+    --others-bg: #262b33;
+    --free: #1c2027;
+    --free-hover: #223047;
+    --danger: #ff8a84;
+    --danger-bg: #3a1e1d;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.5 -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+}
+
+button { font: inherit; cursor: pointer; }
+
+button:not(.ghost):not(.slot):not(.booking) {
+  padding: 0.55rem 1.1rem;
+  border: 0;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.ghost {
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+}
+.ghost:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+
+.muted { color: var(--muted); }
+.pad { padding: 1.5rem; }
+.boot { padding: 3rem; text-align: center; color: var(--muted); }
+.spacer { flex: 1; }
+
+input, select {
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+label { display: block; margin-bottom: 0.9rem; font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+label input, label select { margin-top: 0.3rem; font-weight: 400; color: var(--text); }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem;
+}
+
+/* --- login --- */
+.login-wrap { display: grid; place-items: center; min-height: 100vh; padding: 1.5rem; }
+.login { width: min(24rem, 100%); }
+.login h1 { margin: 0 0 0.25rem; font-size: 1.4rem; }
+.login p { margin: 0 0 1.4rem; font-size: 0.9rem; }
+.login button[type='submit'] { width: 100%; }
+
+.error {
+  margin: 0 0 1rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 8px;
+  background: var(--danger-bg);
+  color: var(--danger);
+  font-size: 0.85rem;
+}
+.error-hint { display: block; margin-top: 0.5rem; opacity: 0.85; font-size: 0.8rem; }
+.banner { margin: 0 1.25rem 0.75rem; cursor: pointer; }
+
+/* --- shell --- */
+.app { display: flex; flex-direction: column; min-height: 100vh; }
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.topbar h1 { margin: 0; font-size: 1.05rem; }
+
+.datebar { display: flex; align-items: center; gap: 0.6rem; padding: 0.9rem 1.25rem; flex-wrap: wrap; }
+.datebar input[type='date'] { width: auto; }
+.date-label { min-width: 11rem; text-align: center; }
+
+/* --- timetable --- */
+.timetable-scroll { flex: 1; overflow: auto; padding: 0 1.25rem 1.25rem; }
+.timetable {
+  display: grid;
+  grid-auto-rows: 1.75rem;
+  gap: 2px;
+  min-width: 48rem;
+}
+
+.th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px 8px 0 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.th.corner { background: transparent; border: 0; }
+.room-name { font-weight: 700; font-size: 0.9rem; }
+.room-meta { color: var(--muted); font-size: 0.72rem; }
+
+.time-label {
+  grid-column: 1;
+  padding-right: 0.6rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  text-align: right;
+  line-height: 1.75rem;
+}
+
+.slot {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--free);
+  padding: 0;
+}
+.slot.hour-start { border-top-color: var(--others); }
+.slot:hover { background: var(--free-hover); border-color: var(--accent); }
+
+.booking {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  overflow: hidden;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid transparent;
+  border-left: 3px solid var(--others);
+  border-radius: 4px;
+  background: var(--others-bg);
+  color: var(--text);
+  text-align: left;
+}
+.booking.mine { border-left-color: var(--mine); background: var(--mine-bg); }
+.booking:hover { border-color: var(--accent); }
+.booking-time { color: var(--muted); font-size: 0.68rem; }
+.booking-title { font-weight: 600; font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.booking-who { color: var(--muted); font-size: 0.68rem; }
+
+/* --- legend --- */
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.85rem 1.25rem;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.78rem;
+  flex-wrap: wrap;
+}
+.swatch { width: 0.85rem; height: 0.85rem; border-radius: 3px; border: 1px solid var(--border); }
+.swatch:not(:first-child) { margin-left: 0.9rem; }
+.swatch.mine { background: var(--mine-bg); border-left: 3px solid var(--mine); }
+.swatch.others { background: var(--others-bg); border-left: 3px solid var(--others); }
+.swatch.free { background: var(--free); }
+
+/* --- dialog --- */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.45);
+}
+.dialog { width: min(28rem, 100%); }
+.dialog h2 { margin: 0 0 1.1rem; font-size: 1.1rem; }
+
+.summary { margin: 0 0 1.2rem; display: grid; gap: 0.5rem; }
+.summary > div { display: flex; gap: 0.75rem; font-size: 0.85rem; }
+.summary dt { min-width: 4.5rem; margin: 0; color: var(--muted); font-weight: 600; }
+.summary dd { margin: 0; }
+
+.row { display: grid; grid-template-columns: 1fr 7rem; gap: 0.9rem; }
+.actions { display: flex; justify-content: flex-end; gap: 0.6rem; }
