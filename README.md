@@ -15,7 +15,7 @@ GitHub Pages: https://naogify.github.io/meeting-room-app/
 Pages 配信のため本番ビルドのベースパスは `/meeting-room-app/`（`vite.config.ts`）。
 接続先は `.env.production` に入っている（いずれも非機密の公開設定）。
 
-ログインには GeonicDB テナント `ohashi` のアカウントが必要。アカウントを持たない
+ログインには GeonicDB テナントのアカウントが必要。アカウントを持たない
 訪問者はログイン画面から先に進めない。
 
 ## セットアップ
@@ -29,7 +29,7 @@ npm run dev                  # http://localhost:5173
 | 環境変数 | 既定値 | 説明 |
 | --- | --- | --- |
 | `VITE_GEONICDB_URL` | `https://geonicdb.geolonia.com/` | GeonicDB のベース URL |
-| `VITE_GEONICDB_TENANT` | `ohashi` | テナント名 |
+| `VITE_GEONICDB_TENANT` | `example` | テナント名 |
 
 ## サーバー側の構成（`geonic` CLI で作成済み）
 
@@ -59,8 +59,8 @@ npm run dev                  # http://localhost:5173
 | `startTime` | string | `10:00` |
 | `endTime` | string | `10:30` |
 | `title` | string | `定例MTG` |
-| `organizer` | string | `ohashi@example.com` |
-| `organizerName` | string | `大橋直記` |
+| `organizer` | string | `yamada@example.com` |
+| `organizerName` | string | `山田太郎` |
 | `attendees` | number | `8` |
 
 `(room, date, startTime)` に `no-double-booking` 複合ユニーク制約。
@@ -89,29 +89,6 @@ geonic entities list --type MeetingRoom -f table
 geonic import rooms.ndjson
 ```
 
-## ハマりどころ: ベース URL の末尾スラッシュ
-
-SDK は `baseUrl` にパスをそのまま連結する（末尾スラッシュを正規化しない）。
-`VITE_GEONICDB_URL` に `https://geonicdb.geolonia.com/` のように末尾スラッシュを
-付けると、実際のリクエストは `//auth/login` になる。
-
-このパスはサーバー側で認証免除プレフィックスの外に落ちるため、XACML の評価対象になり
-`403 Access denied: no applicable policy` が返る。**認証情報は正しいのに権限エラーに
-見える**ので紛らわしい。
-
-```
-POST /auth/login   → 401 Invalid email or password   (ハンドラに到達している)
-POST //auth/login  → 403 Access denied: no applicable policy
-```
-
-`src/geonic.ts` の `normalizeBaseUrl()` で末尾スラッシュを落としているため、
-`.env.local` にどちらの形式を書いても動く。
-
-なお、ログイン直後に `POST /auth/dpop-bind` が **401 を返すのは正常**。
-RFC 9449 §8 の `use_dpop_nonce` ハンドシェイクで、SDK が `DPoP-Nonce` を受け取って
-自動で再送し、DPoP sender-constrained セッションを確立する。ブラウザの
-コンソールに 401 が 1件出るが、エラーではない。
-
 ## ユーザーの追加
 
 ```bash
@@ -119,7 +96,7 @@ geonic admin users create '{
   "email": "someone@example.com",
   "password": "<パスワード>",
   "role": "user",
-  "primaryTenantId": "fc402f66-fc2e-43b0-899f-75e127f8c255"
+  "primaryTenantId": "xxxxxxxxxxxxxx"
 }'
 ```
 
